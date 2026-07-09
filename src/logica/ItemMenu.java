@@ -5,30 +5,32 @@ public class ItemMenu {
 	private String nome;
 	private double preco;
 	
-	// Construtor para inicializar o objeto
+	// Método Construtor para inicializar o objeto
 	public ItemMenu(int codigo, String nome, double preco) {
-	this.codigo = codigo;
-	this.nome = nome;
-	this.preco = preco;
+		this.codigo = codigo;
+		this.nome = nome;
+		this.preco = preco;
 	}
 	
-	// Getters (Acesso seguro aos atributos trancados com private)
+	// Getters e Setters (Permitem ler e alterar os dados com segurança)
 	public int getCodigo() {
-		return codigo;
-	}
+		return codigo;}
+	
+	public void setCodigo(int codigo) {
+        this.codigo = codigo;}
 	
 	public String getNome() {
-		return nome;
-	}
+		return nome;}
+	
+	public void setNome(String nome) {
+		this.nome = nome;}
 		 
 	public double getPreco() {
-		return preco;
+		return preco;}
+	
+	public void setPreco(double preco) {
+		if (preco >= 0)
+		this.preco = preco;
 	}
-
-	// Método para decidir o status com base na nota corte (Exemplo de lógica)
-	//public String getStatus() {
-	//if (this.preco >= 6.0) {
-	//return "APROVADO";
-	//} else
-	//	 return "REPROVADO";}
+	
 }
