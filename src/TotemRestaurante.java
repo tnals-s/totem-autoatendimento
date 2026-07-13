@@ -256,7 +256,10 @@ public class TotemRestaurante extends JFrame {
     }
 
     public static void main(String[] args) {
-        // roda a interface gráfica na thread correta do Swing (segurança de threads)
+    	// Força o Java 2D a renderizar tudo em escala 1:1 (100%), ignorando o Windows
+        System.setProperty("sun.java2d.uiScale", "1.0");
+    	
+    	// roda a interface gráfica na thread correta do Swing (segurança de threads)
         SwingUtilities.invokeLater(() -> {
             new TotemRestaurante().setVisible(true);
         });
