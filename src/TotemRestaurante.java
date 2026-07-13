@@ -189,7 +189,7 @@ public class TotemRestaurante extends JFrame {
         painelFormulario.setOpaque(false);
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(12, 10, 12, 10);
+        gbc.insets = new Insets(12, 10, 12, 8);
         gbc.gridx = 0;
 
         lblResumoFinal = new JLabel("R$ 0,00");
