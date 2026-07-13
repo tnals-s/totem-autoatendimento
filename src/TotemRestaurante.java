@@ -6,42 +6,42 @@ import java.util.ArrayList;
 
 public class TotemRestaurante extends JFrame {
 
-    // Gerenciador de telas (O truque do "Baralho de Cartas")
+    // gerenciador de telas ("Baralho de Cartas")
     private CardLayout cardLayout;
     private JPanel painelPrincipal;
 
-    // Lógica do Carrinho: Uma lista simples para guardar os preços dos itens guardados
+    // carrinho: lista simples para guardar os preços dos itens guardados
     private ArrayList<Double> carrinhoPrecos = new ArrayList<>();
     private JLabel lblTotalCarrinho;
     private JLabel lblResumoFinal;
 
     public TotemRestaurante() {
-        // Configurações básicas da janela (JFrame)
+        // configurações básicas da janela (JFrame)
         setTitle("Totem de Autoatendimento");
-        setSize(500, 800); // Formato vertical que lembra um totem de verdade
+        setSize(500, 800); // formato vertical, como em um totem real
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Inicializando o CardLayout
+        // inicializando o CardLayout
         cardLayout = new CardLayout();
         painelPrincipal = new JPanel(cardLayout);
 
-        // Criando as 3 telas básicas do fluxo
+        // criando 3 telas básicas do fluxo
         criarTela1Inicio();
         criarTela2Cardapio();
         criarTela3Pagamento();
 
-        // Adiciona o painel principal na janela
+        // adiciona o painel principal na janela
         add(painelPrincipal);
     }
 
     // --- TELA 1: INÍCIO ---
     private void criarTela1Inicio() {
-    	// 1. Criar um painel customizado para desenhar a imagem de fundo
+    	// 1. painel customizado para desenhar a imagem de fundo
         JPanel telaInicio = new JPanel() {
             private Image imagemFundo = new ImageIcon(getClass().getResource("/imagem/telaInicio.png")).getImage();
             
-         // Precisamos desse método para o Swing desenhar a imagem na tela
+         // método para o Swing desenhar a imagem na tela
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -50,26 +50,25 @@ public class TotemRestaurante extends JFrame {
                 }
             }
         };
-        
-        // 2. Os comandos de configuração ficam aqui FORA das chaves do JPanel
+       
         telaInicio.setLayout(null);
 
         JButton btnIniciar = new JButton();
 
         // tornando botão invisível
-        btnIniciar.setOpaque(false);          // Não preenche o fundo do botão
-        btnIniciar.setContentAreaFilled(false); // Não desenha a área de conteúdo (o "corpo" do botão)
-        btnIniciar.setBorderPainted(false);   // Não desenha a borda do botão
-        btnIniciar.setFocusPainted(false);    // Não desenha o retângulo de foco (aquele pontilhado)
+        btnIniciar.setOpaque(false);          // não preenche o fundo do botão
+        btnIniciar.setContentAreaFilled(false); // não desenha a área de conteúdo (o "corpo" do botão)
+        btnIniciar.setBorderPainted(false);   // não desenha a borda do botão
+        btnIniciar.setFocusPainted(false);    // não desenha o retângulo de foco (aquele pontilhado)
         
         btnIniciar.setBounds(100, 480, 300, 100); 
 
-        // 4. Configurar a ação do botão (a mesma de antes)
+        // 4. configurar a ação do botão
         btnIniciar.addActionListener(e -> {
             cardLayout.show(painelPrincipal, "Cardapio");
         });
 
-        // 5. Opcional: Mudar o cursor do mouse para a "mãozinha" ao passar sobre o botão
+        // 5. mudar o cursor do mouse para uma "mãozinha" ao passar no botão
         btnIniciar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         telaInicio.add(btnIniciar);
         painelPrincipal.add(telaInicio, "Inicio");
@@ -92,18 +91,18 @@ public class TotemRestaurante extends JFrame {
         // usar o BorderLayout para dividir o layout em norte, sul, centro, leste e oeste
         telaCardapio.setLayout(new BorderLayout());
 
-        // Topo da tela, painel transparente para não ter nada por cima e "empurrar" os itens
+        // topo da tela, painel transparente para não ter nada por cima e "empurrar" os itens
         JPanel espacoTopo = new JPanel();
         espacoTopo.setOpaque(false);
         espacoTopo.setPreferredSize(new Dimension(450,225));
         telaCardapio.add(espacoTopo, BorderLayout.NORTH);
 
-        // Centro: Lista de itens usando GridLayout (linhas, colunas)
+        // centro: lista de itens usando GridLayout (linhas, colunas)
         JPanel painelItens = new JPanel(new GridLayout(3, 1, 10, 15));
         painelItens.setOpaque(false); // deixar transparente para ver o fundo bege
         painelItens.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-        // Criando botões simulando os itens do cardápio
+        // criando botões com os itens do cardápio
         JButton btnHamburguer = new JButton("Combo OAK - R$ 35,00");
         JButton btnBatata = new JButton("Batata Frita - R$ 12,00");
         JButton btnRefrigerante = new JButton("Refrigerante - R$ 8,00");
@@ -114,7 +113,7 @@ public class TotemRestaurante extends JFrame {
         btnBatata.setFont(fonteBotoes);
         btnRefrigerante.setFont(fonteBotoes);
 
-        // configurando as ações de adicionar ao carrinho
+        // configurando os botões com as ações de adicionar ao carrinho
         btnHamburguer.addActionListener(e -> adicionarAoCarrinho(35.00));
         btnBatata.addActionListener(e -> adicionarAoCarrinho(12.00));
         btnRefrigerante.addActionListener(e -> adicionarAoCarrinho(8.00));
@@ -125,7 +124,7 @@ public class TotemRestaurante extends JFrame {
         
         telaCardapio.add(painelItens, BorderLayout.CENTER);
 
-        // Rodapé: Mostra o total atual e o botão de avançar
+        // rodapé: mostra o total atual e o botão de avançar
         JPanel painelRodape = new JPanel(new BorderLayout());
         painelRodape.setBackground(new Color(245,242,235)); // tom bege ao fundo
         painelRodape.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
@@ -136,25 +135,25 @@ public class TotemRestaurante extends JFrame {
 
         JButton btnAvancar = new JButton("Finalizar Pedido");
         btnAvancar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnAvancar.setBackground(new Color(230, 57, 70)); // Vermelho
+        btnAvancar.setBackground(new Color(230, 57, 70)); // vermelho
         btnAvancar.setForeground(Color.WHITE);
         btnAvancar.setFocusPainted(false);
         
         JButton btnVoltar = new JButton("Voltar");
         btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnVoltar.setBackground(new Color(230, 57, 70)); // Vermelho
+        btnVoltar.setBackground(new Color(230, 57, 70)); // vermelho
         btnVoltar.setForeground(Color.WHITE);
         btnVoltar.setFocusPainted(false);
         
         btnAvancar.addActionListener(e -> {
             lblResumoFinal.setText("R$ " + calcularTotal());
-            cardLayout.show(painelPrincipal, "Pagamento");
+            cardLayout.show(painelPrincipal, "Pagamento"); // passando para a próxima tela...
         });
         
         btnVoltar.addActionListener(e -> {
         	carrinhoPrecos.clear();
         	lblTotalCarrinho.setText("Total: R$ 0,00");
-            cardLayout.show(painelPrincipal, "Inicio");
+            cardLayout.show(painelPrincipal, "Inicio"); // voltando para a tela anterior e "resetando o carrinho"
         });
 
         painelRodape.add(lblTotalCarrinho, BorderLayout.WEST);
@@ -199,7 +198,7 @@ public class TotemRestaurante extends JFrame {
         gbc.gridy = 0;
         painelFormulario.add(lblResumoFinal, gbc);
         
-        // espaço invisível para pular o texto da imagem, empurra a caixa de texto para baixo
+        // espaço invisível para pular o texto da imagem; empurra a caixa de texto para baixo
         gbc.gridy = 1;
         painelFormulario.add(Box.createVerticalStrut(120), gbc);
 
@@ -242,7 +241,7 @@ public class TotemRestaurante extends JFrame {
         painelPrincipal.add(telaPagar, "Pagamento");
     }
 
-    // --- MÉTODOS AUXILIARES DE LÓGICA ---
+    // --- MÉTODOS AUXILIARES ---
     private void adicionarAoCarrinho(double preco) {
         carrinhoPrecos.add(preco);
         lblTotalCarrinho.setText("Total: R$ " + calcularTotal() + "  ");
@@ -257,7 +256,7 @@ public class TotemRestaurante extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Roda a interface gráfica na thread correta do Swing (Segurança de Threads)
+        // roda a interface gráfica na thread correta do Swing (segurança de threads)
         SwingUtilities.invokeLater(() -> {
             new TotemRestaurante().setVisible(true);
         });
