@@ -189,7 +189,7 @@ public class TotemRestaurante extends JFrame {
         painelFormulario.setOpaque(false);
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(12, 10, 12, 8);
+        gbc.insets = new Insets(12, 10, 12, 10);
         gbc.gridx = 0;
 
         lblResumoFinal = new JLabel("R$ 0,00");
@@ -256,7 +256,7 @@ public class TotemRestaurante extends JFrame {
     }
 
     public static void main(String[] args) {
-    	// Força o Java 2D a renderizar tudo em escala 1:1 (100%), ignorando o Windows
+    	// força o Java 2D a renderizar tudo em escala 1:1 (100%), ignorando a escala do Windows
         System.setProperty("sun.java2d.uiScale", "1.0");
     	
     	// roda a interface gráfica na thread correta do Swing (segurança de threads)
