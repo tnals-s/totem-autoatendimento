@@ -224,11 +224,38 @@ public class TotemRestaurante extends JFrame {
 
         btnPagar.addActionListener(e -> {
             String cliente = txtNome.getText().trim();
+            double totalCompra = calcularTotal();
+            double limiteControle = 100.00;
+            
             if (cliente.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Por favor, digite seu nome antes de pagar.");
+                JOptionPane.showMessageDialog(this, "Por favor, digite seu nome antes de pagar.", "Aviso", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Obrigado, " + cliente + "!\nSeu pedido foi enviado para a cozinha.");
-                // Reseta o carrinho e volta para a tela inicial
+                String mensagemFinal;
+                double valorFinalCobrado = totalCompra; // O cliente sempre paga o valor exato gasto
+
+                // CONDICIONAL: Verifica se o consumo ultrapassou a marca de R$ 50,00
+                if (totalCompra > limiteControle) {
+                    double valorQuePassou = totalCompra - limiteControle; // Ex: 60 - 50 = 10
+                   
+                    mensagemFinal = String.format(
+                        "Obrigado, %s!\n\n" +
+                        "Seu pedido ultrapassou o limite de controle (R$ %.2f):\n" +
+                        "- Valor Base: R$ %.2f\n" +
+                        "- Valor que passou: R$ %.2f\n\n" +
+                        "-> VALOR TOTAL A PAGAR: R$ %.2f",
+                        cliente, limiteControle, limiteControle, valorQuePassou, valorFinalCobrado
+                    );
+                } else {
+                    // Se ficou abaixo ou igual a 50, mostra apenas o total normal
+                    mensagemFinal = String.format(
+                        "Obrigado, %s!\n\n" +
+                        "Seu pedido ficou dentro do limite de controle.\n\n" +
+                        "-> VALOR TOTAL A PAGAR: R$ %.2f",
+                        cliente, valorFinalCobrado
+                    );
+                }
+             // Exibe o JOptionPane com o detalhamento
+                JOptionPane.showMessageDialog(this, mensagemFinal, "Pedido Finalizado", JOptionPane.INFORMATION_MESSAGE);                // Reseta o carrinho e volta para a tela inicial
                 carrinhoPrecos.clear();
                 lblTotalCarrinho.setText("Total: R$ 0,00  ");
                 txtNome.setText("");
