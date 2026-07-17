@@ -12,6 +12,10 @@ public class TotemRestaurante extends JFrame {
 
     // carrinho: lista simples para guardar os preços dos itens guardados
     private ArrayList<Double> carrinhoPrecos = new ArrayList<>();
+    
+    // lista para guardar o nome de cada item clicado
+    private ArrayList<String> carrinhoNomes = new ArrayList<>();
+    
     private JLabel lblTotalCarrinho;
     private JLabel lblResumoFinal;
 
@@ -114,9 +118,9 @@ public class TotemRestaurante extends JFrame {
         btnRefrigerante.setFont(fonteBotoes);
 
         // configurando os botões com as ações de adicionar ao carrinho
-        btnHamburguer.addActionListener(e -> adicionarAoCarrinho(35.00));
-        btnBatata.addActionListener(e -> adicionarAoCarrinho(12.00));
-        btnRefrigerante.addActionListener(e -> adicionarAoCarrinho(8.00));
+        btnHamburguer.addActionListener(e -> adicionarAoCarrinho("Combo OAK", 35.00));
+        btnBatata.addActionListener(e -> adicionarAoCarrinho("Batata Frita", 12.00));
+        btnRefrigerante.addActionListener(e -> adicionarAoCarrinho("Refrigerante", 8.00));
 
         painelItens.add(btnHamburguer);
         painelItens.add(btnBatata);
@@ -152,6 +156,7 @@ public class TotemRestaurante extends JFrame {
         
         btnVoltar.addActionListener(e -> {
         	carrinhoPrecos.clear();
+        	carrinhoNomes.clear();
         	lblTotalCarrinho.setText("Total: R$ 0,00");
             cardLayout.show(painelPrincipal, "Inicio"); // voltando para a tela anterior e "resetando o carrinho"
         });
@@ -233,30 +238,52 @@ public class TotemRestaurante extends JFrame {
                 String mensagemFinal;
                 double valorFinalCobrado = totalCompra; // O cliente sempre paga o valor exato gasto
 
+                // calcula a quantidade de cada item
+                int qntdHamburguer = 0;
+                int qntdBatata = 0;
+                int qntdRefri = 0;
+                
+                for (String nome : carrinhoNomes) {
+                	if (nome.equals("Combo OAK")) qntdHamburguer++;
+                	else if (nome.equals("Batata Frita")) qntdBatata++;
+                	else if (nome.equals("Refrigerante")) qntdRefri++;
+                }
+                                
+                StringBuilder resumoItens = new StringBuilder();
+                if (qntdHamburguer > 0) resumoItens.append(String.format("- %dx Combo OAK (R$ %.2f)\n", qntdHamburguer, qntdHamburguer * 35.00));
+                if (qntdBatata > 0) resumoItens.append(String.format("- %dx Batata Frita (R$ %.2f)\n", qntdBatata, qntdBatata * 12.00));
+                if (qntdRefri > 0) resumoItens.append(String.format("- %dx Refrigerante (R$ %.2f)\n", qntdRefri, qntdRefri * 8.00));
+                                
                 // CONDICIONAL: Verifica se o consumo ultrapassou a marca de R$ 50,00
                 if (totalCompra > limiteControle) {
                     double valorQuePassou = totalCompra - limiteControle; // Ex: 60 - 50 = 10
-                   
+                  
                     mensagemFinal = String.format(
-                        "Obrigado, %s!\n\n" +
+                        "Obrigado(a), %s!\n\n" +
+                        "RESUMO DO SEU PEDIDO: \n" +
+                        "%s\n" +
                         "Seu pedido ultrapassou o limite de controle (R$ %.2f):\n" +
                         "- Valor Base: R$ %.2f\n" +
                         "- Valor que passou: R$ %.2f\n\n" +
                         "-> VALOR TOTAL A PAGAR: R$ %.2f",
-                        cliente, limiteControle, limiteControle, valorQuePassou, valorFinalCobrado
+                        cliente, resumoItens.toString(), limiteControle, limiteControle, valorQuePassou, valorFinalCobrado
                     );
                 } else {
                     // Se ficou abaixo ou igual a 50, mostra apenas o total normal
                     mensagemFinal = String.format(
-                        "Obrigado, %s!\n\n" +
+                        "Obrigado(a), %s!\n\n" +
+                        "RESUMO DO SEU PEDIDO: \n" +
+                        "%s\n" +
                         "Seu pedido ficou dentro do limite de controle.\n\n" +
                         "-> VALOR TOTAL A PAGAR: R$ %.2f",
-                        cliente, valorFinalCobrado
+                        cliente, resumoItens.toString(), valorFinalCobrado
                     );
                 }
-             // Exibe o JOptionPane com o detalhamento
+                // Exibe o JOptionPane com o detalhamento
                 JOptionPane.showMessageDialog(this, mensagemFinal, "Pedido Finalizado", JOptionPane.INFORMATION_MESSAGE);                // Reseta o carrinho e volta para a tela inicial
+                
                 carrinhoPrecos.clear();
+                carrinhoNomes.clear();
                 lblTotalCarrinho.setText("Total: R$ 0,00  ");
                 txtNome.setText("");
                 cardLayout.show(painelPrincipal, "Inicio");
@@ -269,8 +296,9 @@ public class TotemRestaurante extends JFrame {
     }
 
     // --- MÉTODOS AUXILIARES ---
-    private void adicionarAoCarrinho(double preco) {
+    private void adicionarAoCarrinho(String nome, double preco) {
         carrinhoPrecos.add(preco);
+        carrinhoNomes.add(nome);
         lblTotalCarrinho.setText("Total: R$ " + calcularTotal() + "  ");
     }
 
