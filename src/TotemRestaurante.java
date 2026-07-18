@@ -149,9 +149,44 @@ public class TotemRestaurante extends JFrame {
         btnVoltar.setForeground(Color.WHITE);
         btnVoltar.setFocusPainted(false);
         
-        btnAvancar.addActionListener(e -> {
-            lblResumoFinal.setText("R$ " + calcularTotal());
-            cardLayout.show(painelPrincipal, "Pagamento"); // passando para a próxima tela...
+        btnAvancar.addActionListener(e -> {            
+            if (calcularTotal() == 0) {
+            	JOptionPane.showMessageDialog(this, "Escolha os itens para o seu pedido antes de continuar.", "Carrinho Vazio", JOptionPane.WARNING_MESSAGE);
+            	return; // para a execução e não deixa avançar
+            }
+            	// calcula a quantidade de cada item
+                int qntdHamburguer = 0;
+                int qntdBatata = 0;
+                int qntdRefri = 0;
+                
+                for (String nome : carrinhoNomes) {
+                	if (nome.equals("Combo OAK")) qntdHamburguer++;
+                	else if (nome.equals("Batata Frita")) qntdBatata++;
+                	else if (nome.equals("Refrigerante")) qntdRefri++;
+                }
+                                
+                StringBuilder resumoItens = new StringBuilder();
+                if (qntdHamburguer > 0) resumoItens.append(String.format("- %d Combo OAK (R$ %.2f)\n", qntdHamburguer, qntdHamburguer * 35.00));
+                if (qntdBatata > 0) resumoItens.append(String.format("- %d Batata Frita (R$ %.2f)\n", qntdBatata, qntdBatata * 12.00));
+                if (qntdRefri > 0) resumoItens.append(String.format("- %d Refrigerante (R$ %.2f)\n", qntdRefri, qntdRefri * 8.00));
+                
+                String mensagemAvancar = String.format(
+                		"RESUMO DO SEU PEDIDO:\n%s\nTotal: R$ %.2f\n\nDeseja prosseguir para o Pagamento?",              		
+                		resumoItens.toString(),
+                		calcularTotal()
+                );
+                
+                int resposta = JOptionPane.showConfirmDialog(
+                		this,
+                		mensagemAvancar,
+                		"Confirmando Pedido...",
+                		JOptionPane.YES_NO_OPTION,
+                		JOptionPane.QUESTION_MESSAGE
+                		);
+                if (resposta == JOptionPane.YES_OPTION) {
+                	lblResumoFinal.setText("R$ " + String.format("%.2f", calcularTotal()));
+                	cardLayout.show(painelPrincipal, "Pagamento"); // passando para a próxima tela...
+                }
         });
         
         btnVoltar.addActionListener(e -> {
@@ -237,51 +272,32 @@ public class TotemRestaurante extends JFrame {
             } else {
                 String mensagemFinal;
                 double valorFinalCobrado = totalCompra; // O cliente sempre paga o valor exato gasto
-
-                // calcula a quantidade de cada item
-                int qntdHamburguer = 0;
-                int qntdBatata = 0;
-                int qntdRefri = 0;
-                
-                for (String nome : carrinhoNomes) {
-                	if (nome.equals("Combo OAK")) qntdHamburguer++;
-                	else if (nome.equals("Batata Frita")) qntdBatata++;
-                	else if (nome.equals("Refrigerante")) qntdRefri++;
-                }
-                                
-                StringBuilder resumoItens = new StringBuilder();
-                if (qntdHamburguer > 0) resumoItens.append(String.format("- %dx Combo OAK (R$ %.2f)\n", qntdHamburguer, qntdHamburguer * 35.00));
-                if (qntdBatata > 0) resumoItens.append(String.format("- %dx Batata Frita (R$ %.2f)\n", qntdBatata, qntdBatata * 12.00));
-                if (qntdRefri > 0) resumoItens.append(String.format("- %dx Refrigerante (R$ %.2f)\n", qntdRefri, qntdRefri * 8.00));
-                                
+                                              
                 // CONDICIONAL: Verifica se o consumo ultrapassou a marca de R$ 50,00
                 if (totalCompra > limiteControle) {
                     double valorQuePassou = totalCompra - limiteControle; // Ex: 60 - 50 = 10
                   
                     mensagemFinal = String.format(
                         "Obrigado(a), %s!\n\n" +
-                        "RESUMO DO SEU PEDIDO: \n" +
-                        "%s\n" +
                         "Seu pedido ultrapassou o limite de controle (R$ %.2f):\n" +
                         "- Valor Base: R$ %.2f\n" +
                         "- Valor que passou: R$ %.2f\n\n" +
                         "-> VALOR TOTAL A PAGAR: R$ %.2f",
-                        cliente, resumoItens.toString(), limiteControle, limiteControle, valorQuePassou, valorFinalCobrado
+                        cliente, limiteControle, limiteControle, valorQuePassou, valorFinalCobrado
                     );
                 } else {
                     // Se ficou abaixo ou igual a 50, mostra apenas o total normal
                     mensagemFinal = String.format(
                         "Obrigado(a), %s!\n\n" +
-                        "RESUMO DO SEU PEDIDO: \n" +
-                        "%s\n" +
                         "Seu pedido ficou dentro do limite de controle.\n\n" +
                         "-> VALOR TOTAL A PAGAR: R$ %.2f",
-                        cliente, resumoItens.toString(), valorFinalCobrado
+                        cliente, valorFinalCobrado
                     );
                 }
-                // Exibe o JOptionPane com o detalhamento
-                JOptionPane.showMessageDialog(this, mensagemFinal, "Pedido Finalizado", JOptionPane.INFORMATION_MESSAGE);                // Reseta o carrinho e volta para a tela inicial
+                // exibe o JOptionPane com o detalhamento
+                JOptionPane.showMessageDialog(this, mensagemFinal, "Pedido Finalizado", JOptionPane.INFORMATION_MESSAGE);                
                 
+                // reseta o carrinho e volta para a tela inicial
                 carrinhoPrecos.clear();
                 carrinhoNomes.clear();
                 lblTotalCarrinho.setText("Total: R$ 0,00  ");
