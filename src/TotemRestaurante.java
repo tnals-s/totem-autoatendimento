@@ -353,7 +353,8 @@ public class TotemRestaurante extends JFrame {
         btnFim.setPreferredSize(new Dimension(220, 50));
         
         btnFim.addActionListener(e -> {
-            cardLayout.show(painelPrincipal, "Inicio");
+            JOptionPane.showMessageDialog(this, "Enviando pedido para a cozinha... :)", "Status", JOptionPane.INFORMATION_MESSAGE);
+        	cardLayout.show(painelPrincipal, "Inicio");
         });
         
         telaPagar.add(painelFormulario2, BorderLayout.CENTER);
