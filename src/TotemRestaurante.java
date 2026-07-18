@@ -33,7 +33,8 @@ public class TotemRestaurante extends JFrame {
         // criando 3 telas básicas do fluxo
         criarTela1Inicio();
         criarTela2Cardapio();
-        criarTela3Pagamento();
+        criarTela3Confirmar();
+        criarTela4Pagamento();
 
         // adiciona o painel principal na janela
         add(painelPrincipal);
@@ -128,7 +129,7 @@ public class TotemRestaurante extends JFrame {
         
         telaCardapio.add(painelItens, BorderLayout.CENTER);
 
-        // rodapé: mostra o total atual e o botão de avançar
+        // rodapé: mostra o total atual e os botões voltar e avançar
         JPanel painelRodape = new JPanel(new BorderLayout());
         painelRodape.setBackground(new Color(245,242,235)); // tom bege ao fundo
         painelRodape.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
@@ -139,13 +140,13 @@ public class TotemRestaurante extends JFrame {
 
         JButton btnAvancar = new JButton("Finalizar Pedido");
         btnAvancar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnAvancar.setBackground(new Color(230, 57, 70)); // vermelho
+        btnAvancar.setBackground(new Color(64, 35, 15));
         btnAvancar.setForeground(Color.WHITE);
         btnAvancar.setFocusPainted(false);
         
         JButton btnVoltar = new JButton("Voltar");
         btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnVoltar.setBackground(new Color(230, 57, 70)); // vermelho
+        btnVoltar.setBackground(new Color(64, 35, 15));
         btnVoltar.setForeground(Color.WHITE);
         btnVoltar.setFocusPainted(false);
         
@@ -185,7 +186,7 @@ public class TotemRestaurante extends JFrame {
                 		);
                 if (resposta == JOptionPane.YES_OPTION) {
                 	lblResumoFinal.setText("R$ " + String.format("%.2f", calcularTotal()));
-                	cardLayout.show(painelPrincipal, "Pagamento"); // passando para a próxima tela...
+                	cardLayout.show(painelPrincipal, "Confirmar"); // passando para a próxima tela...
                 }
         });
         
@@ -204,26 +205,26 @@ public class TotemRestaurante extends JFrame {
         painelPrincipal.add(telaCardapio, "Cardapio");
     }
 
-    // --- TELA 3: PAGAMENTO ---
-    private void criarTela3Pagamento() {
-    	JPanel telaPagar = new JPanel() {
-            private Image imagemFundoPagar = new ImageIcon(getClass().getResource("/imagem/telaPagar.png")).getImage();
+    // --- TELA 3: NOME E CONFIRMAÇÃO ---
+    private void criarTela3Confirmar() {
+    	JPanel telaConfirmar = new JPanel() {
+            private Image imagemFundoNome = new ImageIcon(getClass().getResource("/imagem/telaNome.png")).getImage();
             
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (imagemFundoPagar != null) {
-                    g.drawImage(imagemFundoPagar, 0, 0, getWidth(), getHeight(), this);
+                if (imagemFundoNome != null) {
+                    g.drawImage(imagemFundoNome, 0, 0, getWidth(), getHeight(), this);
                 }
             }
         };        
         
-        telaPagar.setLayout(new BorderLayout());
+        telaConfirmar.setLayout(new BorderLayout());
         
         JPanel espacoTopo2 = new JPanel();
         espacoTopo2.setOpaque(false);
         espacoTopo2.setPreferredSize(new Dimension(450,225));
-        telaPagar.add(espacoTopo2, BorderLayout.NORTH);
+        telaConfirmar.add(espacoTopo2, BorderLayout.NORTH);
         
         JPanel painelFormulario = new JPanel(new GridBagLayout());
         painelFormulario.setOpaque(false);
@@ -302,12 +303,60 @@ public class TotemRestaurante extends JFrame {
                 carrinhoNomes.clear();
                 lblTotalCarrinho.setText("Total: R$ 0,00  ");
                 txtNome.setText("");
-                cardLayout.show(painelPrincipal, "Inicio");
+                cardLayout.show(painelPrincipal, "Pagamento");
             }
         });
         
-        telaPagar.add(painelFormulario, BorderLayout.CENTER);
+        telaConfirmar.add(painelFormulario, BorderLayout.CENTER);
 
+        painelPrincipal.add(telaConfirmar, "Confirmar");
+    }
+    
+    private void criarTela4Pagamento() {
+    	JPanel telaPagar = new JPanel() {
+            private Image imagemFundoPagar = new ImageIcon(getClass().getResource("/imagem/telaPagamento.png")).getImage();
+            
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (imagemFundoPagar != null) {
+                    g.drawImage(imagemFundoPagar, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };        
+        
+        telaPagar.setLayout(new BorderLayout());
+        
+        JPanel painelFormulario2 = new JPanel(new GridBagLayout());
+        painelFormulario2.setOpaque(false);
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(12, 10, 12, 10);
+        gbc.gridx = 0;
+        
+        gbc.gridy = 1;
+        painelFormulario2.add(Box.createVerticalStrut(120), gbc);
+        gbc.gridy = 2;
+        painelFormulario2.add(Box.createVerticalStrut(120), gbc);
+        gbc.gridy = 3;
+        painelFormulario2.add(Box.createVerticalStrut(120), gbc);
+        
+        gbc.gridy = 4;
+        JButton btnFim = new JButton();
+        painelFormulario2.add(btnFim, gbc);
+        
+        btnFim.setOpaque(false);
+        btnFim.setContentAreaFilled(false);
+        btnFim.setBorderPainted(false);
+        btnFim.setFocusPainted(false);
+        btnFim.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnFim.setPreferredSize(new Dimension(220, 50));
+        
+        btnFim.addActionListener(e -> {
+            cardLayout.show(painelPrincipal, "Inicio");
+        });
+        
+        telaPagar.add(painelFormulario2, BorderLayout.CENTER);
         painelPrincipal.add(telaPagar, "Pagamento");
     }
 
