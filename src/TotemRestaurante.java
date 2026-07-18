@@ -180,7 +180,7 @@ public class TotemRestaurante extends JFrame {
                 int resposta = JOptionPane.showConfirmDialog(
                 		this,
                 		mensagemAvancar,
-                		"Confirmando Pedido...",
+                		"Confirmando...",
                 		JOptionPane.YES_NO_OPTION,
                 		JOptionPane.QUESTION_MESSAGE
                 		);
