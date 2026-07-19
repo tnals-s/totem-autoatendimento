@@ -117,6 +117,16 @@ public class TotemRestaurante extends JFrame {
         btnHamburguer.setFont(fonteBotoes);
         btnBatata.setFont(fonteBotoes);
         btnRefrigerante.setFont(fonteBotoes);
+        
+        btnHamburguer.setBackground(new Color(64, 35, 15));
+        btnBatata.setBackground(new Color(64, 35, 15));
+        btnRefrigerante.setBackground(new Color(64, 35, 15));
+        btnHamburguer.setForeground(Color.WHITE);
+        btnBatata.setForeground(Color.WHITE);
+        btnRefrigerante.setForeground(Color.WHITE);
+        btnHamburguer.setFocusPainted(false);
+        btnBatata.setFocusPainted(false);
+        btnRefrigerante.setFocusPainted(false);
 
         // configurando os botões com as ações de adicionar ao carrinho
         btnHamburguer.addActionListener(e -> adicionarAoCarrinho("Combo OAK", 35.00));
