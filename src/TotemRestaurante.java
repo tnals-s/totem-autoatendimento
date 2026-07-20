@@ -30,7 +30,7 @@ public class TotemRestaurante extends JFrame {
         cardLayout = new CardLayout();
         painelPrincipal = new JPanel(cardLayout);
 
-        // criando 3 telas básicas do fluxo
+        // criando 4 telas básicas do fluxo
         criarTela1Inicio();
         criarTela2Cardapio();
         criarTela3Confirmar();
@@ -284,9 +284,9 @@ public class TotemRestaurante extends JFrame {
                 String mensagemFinal;
                 double valorFinalCobrado = totalCompra; // O cliente sempre paga o valor exato gasto
                                               
-                // CONDICIONAL: Verifica se o consumo ultrapassou a marca de R$ 50,00
+                // CONDICIONAL: Verifica se o consumo ultrapassou a marca de R$ 100,00
                 if (totalCompra > limiteControle) {
-                    double valorQuePassou = totalCompra - limiteControle; // Ex: 60 - 50 = 10
+                    double valorQuePassou = totalCompra - limiteControle; // Ex: 120 - 100 = 20
                   
                     mensagemFinal = String.format(
                         "Obrigado(a), %s!\n\n" +
@@ -297,7 +297,7 @@ public class TotemRestaurante extends JFrame {
                         cliente, limiteControle, limiteControle, valorQuePassou, valorFinalCobrado
                     );
                 } else {
-                    // Se ficou abaixo ou igual a 50, mostra apenas o total normal
+                    // Se ficou abaixo ou igual a 100, mostra apenas o total normal
                     mensagemFinal = String.format(
                         "Obrigado(a), %s!\n\n" +
                         "Seu pedido ficou dentro do limite de controle.\n\n" +
